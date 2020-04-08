@@ -27,7 +27,7 @@ def impact(reportedCases, factor):
 
 	
 
-def severeImpact(reportedCases, factor):
+def severeimpact(reportedCases, factor):
 	currently_infected = reportedCases * 50
 	InfectionsByRequestedTime = currently_infected *(2**factor)
 	return [currently_infected, InfectionsByRequestedTime]
