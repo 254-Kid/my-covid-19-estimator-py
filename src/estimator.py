@@ -1,3 +1,5 @@
+import json
+
 def estimator(data):
 	newdata = data
 	periodType = data['periodType']
@@ -14,7 +16,8 @@ def estimator(data):
 		'impact':{'currentlyInfected' : i[0], 'infectionsByRequestedTime' : i[1]},
 		'severeImpact':{'currentlyInfected' :s[0], 'infectionsByRequestedTime' : s[1]}
 	}
-	data = newdict
+
+	data = json.dumps(newdict)
 
 	return data
 
