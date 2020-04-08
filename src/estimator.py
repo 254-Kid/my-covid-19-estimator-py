@@ -9,20 +9,33 @@ def estimator(data):
 	impact(reportedCases, factor)
 	severeImpact(reportedCases, factor)
 
+	return {
+
+	data:{data},
+	impact:{
+		currentlyInfected : currently_infected_impact,
+		InfectionsByRequestedTime : infectionsByRequestedTime_impact
+		},
+	severeImpact:{
+		currentlyInfected :currently_infected_severe,
+		infectionsByRequestedTime : infectionsByRequestedTime_severe
+	}
+
+	}
 
 
 	def impact(reportedCases, factor):
 		global currently_infected_impact
-		global InfectionsByRequestedTime_impact
+		global infectionsByRequestedTime_impact
 		currently_infected_impact = reportedCases * 10
-		InfectionsByRequestedTime_impact = currently_infected *(2**factor)
+		infectionsByRequestedTime_impact = currently_infected *(2**factor)
 		
 
 	def severeImpact(reportedCases, factor):
-		global currently_infected_severeImpact
-		global InfectionsByRequestedTime_severeImpact
-		currently_infected_severeImpact = reportedCases * 50
-		InfectionsByRequestedTime_severeImpact = currently_infected *(2**factor)
+		global currently_infected_severe
+		global infectionsByRequestedTime_severe
+		currently_infected_severe = reportedCases * 50
+		infectionsByRequestedTime_severe = currently_infected *(2**factor)
 	
 		
 	#Function to calculate and return the factor with all period type variations
@@ -37,20 +50,3 @@ def estimator(data):
 		factor = days//3
 
 		return factor
-
-	impact(reportedCases, factor)
-	severeImpact(reportedCases, factor)
-
-	return {
-
-	data:{data},
-	impact:{
-		currentlyInfected : currently_infected_impact,
-		InfectionsByRequestedTime : InfectionsByRequestedTime_impact
-		},
-	severeImpact:{
-		currentlyInfected :currently_infected_severeImpact
-		infectionsByRequestedTime : InfectionsByRequestedTime_severeImpact
-	}
-
-	}
