@@ -11,14 +11,12 @@ def estimator(data):
 	i = impact(reportedCases, factor)
 	s = severeimpact(reportedCases, factor)
 
-	finaldata = {
+	return {
 		data:newdata,
 		impact:{currentlyInfected : impact[0], InfectionsByRequestedTime : impact[1]},
 		severeImpact:{currentlyInfected :severe[0], infectionsByRequestedTime : severe[1]}
 	}
 
-	data = finaldata
-	return data
 
 def impact(reportedCases, factor):
 	currently_infected = reportedCases * 10
