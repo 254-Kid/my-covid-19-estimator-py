@@ -50,7 +50,7 @@ def estimator(data):
 		},
 	severeImpact:{
 		currentlyInfected :currently_infected_severeImpact
-		InfectionsByRequestedTime : InfectionsByRequestedTime_severeImpact
+		infectionsByRequestedTime : InfectionsByRequestedTime_severeImpact
 	}
 
 	}
