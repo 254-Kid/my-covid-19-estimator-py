@@ -1,46 +1,61 @@
-import json
+def estimator(input_data):
+    impact = {}
+    severeImpact = {}
+    ###Normalizing the duration to just days
+    duration = duration_normaliser(input_data['periodType'],input_data['timeToElapse'])
+    
+    ##CHALLENGE 1
+    ###calculating the estimated infections by the time duration
+    ##IMPACT
+    impact['currentlyInfected']=input_data['reportedCases'] * 10
+    impact['infectionsByRequestedTime'] = impact['currentlyInfected']*(pow(2,duration//3))
+    ##SEVEREIMPACT
+    severeImpact['currentlyInfected']=input_data['reportedCases']*50
+    severeImpact['infectionsByRequestedTime'] =severeImpact['currentlyInfected']*(pow(2,duration//3))
+    
+  
+    ###CHALLENGE 2
+    ##SEVEREIMPACT
+    severeImpact['severeCasesByRequestedTime']=severeImpact['infectionsByRequestedTime']*0.15
+  
+    severeImpact['hospitalBedsByRequestedTime']=available_beds(input_data['totalHospitalBeds'],severeImpact['severeCasesByRequestedTime'])
+    
+    ##IMPACT
+    impact['severeCasesByRequestedTime']=impact['infectionsByRequestedTime']*0.15
+    
+    impact['hospitalBedsByRequestedTime']=available_beds(input_data['totalHospitalBeds'],impact['severeCasesByRequestedTime'])
+    
 
-def estimator(data):
-	newdata = data
-	periodType = data['periodType']
-	timeToElapse = data['timeToElapse']
-	reportedCases = data['reportedCases']
+    ###CHALLENGE 3
+    #function declaration for dolarsInFlight computation
+    factor= money_lost(duration, input_data['region']['avgDailyIncomeInUSD'], input_data['region']['avgDailyIncomePopulation'])
+    
+    ##SEVEREIMPACT
+    severeImpact['casesForICUByRequestedTime']=0.05*severeImpact['infectionsByRequestedTime']
+    severeImpact['casesForVentilatorsByRequestedTime']=0.02*severeImpact['infectionsByRequestedTime']
+    severeImpact['dollarsInFlight']=severeImpact['infectionsByRequestedTime']*factor
+    
+    ##IMPACT
+    impact['casesForICUByRequestedTime']=0.05*impact['infectionsByRequestedTime']
+    impact['casesForVentilatorsByRequestedTime']=0.02*impact['infectionsByRequestedTime']
+    impact['dollarsInFlight']=impact['infectionsByRequestedTime']*factor
+    
+    
+    output_data = {'data':input_data, 'impact':impact, 'severeImpact': severeImpact}
+    return output_data
 
-	#factor = factor_calculator(periodType, timeToElapse)
+def duration_normaliser(duration ,value):
+    if duration == "months":
+        value *= 30
+    elif duration == "weeks":
+        value *= 7
 
-	i = impact(reportedCases, factor_calculator(periodType, timeToElapse))
-	s = severeimpact(reportedCases, factor_calculator(periodType, timeToElapse))
+    return value
 
-	newdict = {
-		'data':data,
-		'impact':{'currentlyInfected' : i[0], 'infectionsByRequestedTime' : i[1]},
-		'severeImpact':{'currentlyInfected' :s[0], 'infectionsByRequestedTime' : s[1]}
-	}
+def available_beds(totalbeds,severecases):
+  #expected 35% bed availability in hospitals
+    beds_available=(0.35*totalbeds)-severecases
+    return beds_available
 
-	data = json.dumps(newdict)
-
-	return data
-
-
-def impact(reportedCases, factor):
-	currently_infected = reportedCases * 10
-	InfectionsByRequestedTime = currently_infected *(2**factor)
-	return [currently_infected, InfectionsByRequestedTime]
-
-	
-
-def severeimpact(reportedCases, factor):
-	currently_infected = reportedCases * 50
-	InfectionsByRequestedTime = currently_infected *(2**factor)
-	return [currently_infected, InfectionsByRequestedTime]
-	
-
-def factor_calculator(periodType, timeToElapse):
-	if periodType == "days":
-		days = timeToElapse
-	elif periodType == "weeks":
-		days = 7 * timeToElapse
-	elif periodType == "months":
-		days = 30 * timeToElapse
-
-	return days//3
+def money_lost(days,avgIncome,avgIncomePopulation):
+  return avgIncome*days*avgIncomePopulation
