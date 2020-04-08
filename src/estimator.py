@@ -1,16 +1,16 @@
 def estimator(data):
 	newdata = data
-	periodType = newdata['periodType']
-	timeToElapse = newdata['timeToElapse']
-	reportedCases = newdata['reportedCases']
+	periodType = data['periodType']
+	timeToElapse = data['timeToElapse']
+	reportedCases = data['reportedCases']
 
-	factor = factor_calculator(periodType, timeToElapse)
+	#factor = factor_calculator(periodType, timeToElapse)
 
-	i = impact(reportedCases, factor)
-	s = severeimpact(reportedCases, factor)
+	i = impact(reportedCases, factor_calculator(periodType, timeToElapse))
+	s = severeimpact(reportedCases, factor_calculator(periodType, timeToElapse))
 
 	newdict = {
-		'data':newdata,
+		'data':data,
 		'impact':{'currentlyInfected' : i[0], 'infectionsByRequestedTime' : i[1]},
 		'severeImpact':{'currentlyInfected' :s[0], 'infectionsByRequestedTime' : s[1]}
 	}
@@ -40,6 +40,4 @@ def factor_calculator(periodType, timeToElapse):
 	elif periodType == "months":
 		days = 30 * timeToElapse
 
-	factor = days//3
-
-	return factor
+	return days//3
