@@ -1,32 +1,3 @@
-def estimator(data):
-	input = data
-
-	periodType = input.periodType
-	timeToElapse = input.timeToElapse
-	reportedCases = input.reportedCases
-
-	factor = factor_calculator(periodType, timeToElapse)
-
-	impact = impact(reportedCases, factor)
-	severe= severeImpact(reportedCases, factor)
-
-	newdata = {
-
-	data: input,
-	impact:{
-		currentlyInfected : impact[0],
-		InfectionsByRequestedTime : impact[1]
-		},
-	severeImpact:{
-		currentlyInfected :severe[0],
-		infectionsByRequestedTime : severe[1]
-	}
-
-	}
-	data = newdata
-
-	return data
-
 
 def impact(reportedCases, factor):
 	currently_infected_impact = reportedCases * 10
@@ -52,3 +23,33 @@ def factor_calculator(periodType, timeToElapse):
 	factor = days//3
 
 	return factor
+
+
+
+def estimator(data):
+	input = data
+	periodType = input.periodType
+	timeToElapse = input.timeToElapse
+	reportedCases = input.reportedCases
+
+	factor = factor_calculator(periodType, timeToElapse)
+
+	impact = impact(reportedCases, factor)
+	severe= severeImpact(reportedCases, factor)
+
+	newdata = {
+
+	data: input,
+	impact:{
+		currentlyInfected : impact[0],
+		InfectionsByRequestedTime : impact[1]
+		},
+	severeImpact:{
+		currentlyInfected :severe[0],
+		infectionsByRequestedTime : severe[1]
+	}
+
+	}
+	data = newdata
+
+	return data
