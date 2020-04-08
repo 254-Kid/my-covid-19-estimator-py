@@ -11,7 +11,7 @@ def estimator(data):
 	periodType = newdata["periodType"]
 	timeToElapse = newdata["timeToElapse"]
 	reportedCases = newdata["reportedCases"]
-
+	factor = factor_calculator(periodType, timeToElapse)
 
 	impact(reportedCases, factor)
 	severeimpact(reportedCases, factor)
