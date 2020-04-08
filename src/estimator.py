@@ -13,8 +13,8 @@ def estimator(data):
 
 	finaldata = {
 		data:newdata,
-		impact:{},
-		severeImpact:{}
+		impact:{currentlyInfected : impact[0], InfectionsByRequestedTime : impact[1]},
+		severeImpact:{currentlyInfected :severe[0], infectionsByRequestedTime : severe[1]}
 	}
 
 	data = finaldata
