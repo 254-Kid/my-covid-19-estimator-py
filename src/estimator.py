@@ -11,7 +11,7 @@ def estimator(data):
 	i = impact(reportedCases, factor)
 	s = severeimpact(reportedCases, factor)
 
-		finaldata = {
+	finaldata = {
 		data:newdata,
 		impact:{},
 		severeImpact:{}
