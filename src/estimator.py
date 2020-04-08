@@ -12,9 +12,9 @@ def estimator(data):
 	s = severeimpact(reportedCases, factor)
 
 	return {
-		data:newdata,
-		impact:{currentlyInfected : impact[0], InfectionsByRequestedTime : impact[1]},
-		severeImpact:{currentlyInfected :severe[0], infectionsByRequestedTime : severe[1]}
+		'data':newdata,
+		'impact':{currentlyInfected : impact[0], InfectionsByRequestedTime : impact[1]},
+		'severeImpact':{currentlyInfected :severe[0], infectionsByRequestedTime : severe[1]}
 	}
 
 
