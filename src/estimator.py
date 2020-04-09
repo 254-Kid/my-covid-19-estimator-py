@@ -1,4 +1,5 @@
 def estimator(data):
+    #initialization of variables used
     impact = {}
     severeImpact = {}
     reportedCases = data['reportedCases']
@@ -8,11 +9,11 @@ def estimator(data):
     avgDailyIncome = data['region']['avgDailyIncomeInUSD']
     avgDailyIncomePopulation = data['region']['avgDailyIncomePopulation']
 
-    ###Normalizing the duration to just days
-    duration = duration_to_days(periodType, timeToElapse)
-    factor = duration//3
     
     #CHALLENGE 1
+
+    duration = duration_to_days(periodType, timeToElapse)
+    factor = duration//3
 
     #For Impact
     impact['currentlyInfected'] = reportedCases * 10
