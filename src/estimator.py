@@ -35,7 +35,7 @@ def estimator(data):
     severeImpact['hospitalBedsByRequestedTime'] = beds_available(totalHospitalBeds, severeImpact['severeCasesByRequestedTime'])
 
     #CHALLENGE 3
-    factor= money_lost(duration, avgDailyIncome, avgDailyIncomePopulation )
+    factor= lost_money(duration, avgDailyIncome, avgDailyIncomePopulation )
 
     #For Impact
     impact['casesForICUByRequestedTime'] = int( impact['infectionsByRequestedTime'] * 0.05)
