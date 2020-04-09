@@ -29,7 +29,7 @@ def estimator(data):
 
     #For Severe Impact
     severeImpact['severeCasesByRequestedTime'] = severeImpact['infectionsByRequestedTime'] * 0.15
-    severeImpact['hospitalBedsByRequestedTime'] = beds_available(totalHospitalBeds, impact['severeCasesByRequestedTime'])
+    severeImpact['hospitalBedsByRequestedTime'] = beds_available(totalHospitalBeds, severeImpact['severeCasesByRequestedTime'])
 
 
 
