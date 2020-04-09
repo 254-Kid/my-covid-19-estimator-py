@@ -23,16 +23,13 @@ def estimator(data):
     #CHALLENGE 2
 
     #For Impact
-    impact['severeCasesByRequestedTime'] = severeImpact['infectionsByRequestedTime'] * 0.15
+    impact['severeCasesByRequestedTime'] = impact['infectionsByRequestedTime'] * 0.15
     impact['hospitalBedsByRequestedTime'] = beds_available(totalHospitalBeds, impact['severeCasesByRequestedTime'])
 
 
     #For Severe Impact
     severeImpact['severeCasesByRequestedTime'] = severeImpact['infectionsByRequestedTime'] * 0.15
     severeImpact['hospitalBedsByRequestedTime'] = beds_available(totalHospitalBeds, severeImpact['severeCasesByRequestedTime'])
-
-
-
 
 
     output = {'data':data, 'impact':impact, 'severeImpact': severeImpact}
