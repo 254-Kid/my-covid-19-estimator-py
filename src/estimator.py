@@ -23,13 +23,15 @@ def estimator(data):
     #CHALLENGE 2
 
     #For Impact
-    impact['severeCasesByRequestedTime'] = int(impact['infectionsByRequestedTime'] * 0.15)
-    impact['hospitalBedsByRequestedTime'] = int(beds_available(totalHospitalBeds, impact['severeCasesByRequestedTime']))
+    impact['severeCasesByRequestedTime'] = int(impact['infectionsByRequestedTime'] * 0.15) 
+    impact['hospitalBedsByRequestedTime'] = beds_available(totalHospitalBeds, impact['severeCasesByRequestedTime'])
 
 
     #For Severe Impact
     severeImpact['severeCasesByRequestedTime'] = int(severeImpact['infectionsByRequestedTime'] * 0.15)
-    severeImpact['hospitalBedsByRequestedTime'] = int(beds_available(totalHospitalBeds, severeImpact['severeCasesByRequestedTime']))
+    severeImpact['hospitalBedsByRequestedTime'] = beds_available(totalHospitalBeds, severeImpact['severeCasesByRequestedTime'])
+
+
 
 
     output = {'data':data, 'impact':impact, 'severeImpact': severeImpact}
@@ -47,6 +49,5 @@ def duration_to_days(durationType ,time):
 #calculating the number of beds available
 def beds_available(totalbeds,severecases):
     available_beds = (0.35 * totalbeds) - severecases
-    return available_beds
-
+    return int(available_beds)
 
