@@ -1,63 +1,73 @@
-def estimator(input_data):
+def estimator(data):
     impact = {}
     severeImpact = {}
+    reportedCases = data['reportedCases']
+    periodType = data['periodType']
+    timeToElapse = data['timeToElapse']
+    totalHospitalBeds = data['totalHospitalBeds']
+    avgDailyIncome = data['region']['avgDailyIncomeInUSD']
+    avgDailyIncomePopulation = data['region']['avgDailyIncomePopulation']
+
     ###Normalizing the duration to just days
-    duration = duration_normaliser(input_data['periodType'],input_data['timeToElapse'])
+    duration = duration_to_days(periodType, timeToElapse)
+    factor = duration//3
+    
+    #CHALLENGE 1
 
-    ##CHALLENGE 1
-    ###calculating the estimated infections by the time duration
-    ##IMPACT
-    impact['currentlyInfected']=input_data['reportedCases'] * 10
-    impact['infectionsByRequestedTime'] = impact['currentlyInfected']*(pow(2,duration//3))
-    ##SEVEREIMPACT
-    severeImpact['currentlyInfected']=input_data['reportedCases']*50
-    severeImpact['infectionsByRequestedTime'] =severeImpact['currentlyInfected']*(pow(2,duration//3))
+    #For Impact
+    impact['currentlyInfected'] = reportedCases * 10
+    impact['infectionsByRequestedTime'] = impact['currentlyInfected'] * (pow(2,factor))
 
+    #For Severe Impact
+    severeImpact['currentlyInfected'] = reportedCases * 50
+    severeImpact['infectionsByRequestedTime'] = severeImpact['currentlyInfected']*(pow(2,factor))
 
-    ###CHALLENGE 2
-    ##SEVEREIMPACT
-    severeImpact['severeCasesByRequestedTime']=severeImpact['infectionsByRequestedTime']*0.15
+    #CHALLENGE 2
 
-    severeImpact['hospitalBedsByRequestedTime']=available_beds(input_data['totalHospitalBeds'],severeImpact['severeCasesByRequestedTime'])
-
-    ##IMPACT
-    impact['severeCasesByRequestedTime']=impact['infectionsByRequestedTime']*0.15
-
-    impact['hospitalBedsByRequestedTime']=available_beds(input_data['totalHospitalBeds'],impact['severeCasesByRequestedTime'])
+    #For Impact
+    impact['severeCasesByRequestedTime'] = int(impact['infectionsByRequestedTime'] * 0.15) 
+    impact['hospitalBedsByRequestedTime'] = beds_available(totalHospitalBeds, impact['severeCasesByRequestedTime'])
 
 
-    ###CHALLENGE 3
-    #function declaration for dolarsInFlight computation
-    factor= money_lost(duration, input_data['region']['avgDailyIncomeInUSD'], input_data['region']['avgDailyIncomePopulation'])
+    #For Severe Impact
+    severeImpact['severeCasesByRequestedTime'] = int(severeImpact['infectionsByRequestedTime'] * 0.15)
+    severeImpact['hospitalBedsByRequestedTime'] = beds_available(totalHospitalBeds, severeImpact['severeCasesByRequestedTime'])
 
-    ##SEVEREIMPACT
-    severeImpact['casesForICUByRequestedTime']=0.05*severeImpact['infectionsByRequestedTime']
-    severeImpact['casesForVentilatorsByRequestedTime']=0.02*severeImpact['infectionsByRequestedTime']
-    severeImpact['dollarsInFlight']=severeImpact['infectionsByRequestedTime']*factor
+    #CHALLENGE 3
+    factor= money_lost(duration, avgDailyIncome, avgDailyIncomePopulation )
 
-    ##IMPACT
-    impact['casesForICUByRequestedTime']=0.05*impact['infectionsByRequestedTime']
-    impact['casesForVentilatorsByRequestedTime']=0.02*impact['infectionsByRequestedTime']
-    impact['dollarsInFlight']=impact['infectionsByRequestedTime']*factor
+    #For Impact
+    impact['casesForICUByRequestedTime'] = int( impact['infectionsByRequestedTime'] * 0.05)
+    impact['casesForVentilatorsByRequestedTime'] = int(impact['infectionsByRequestedTime'] * 0.02)
+    impact['dollarsInFlight'] = impact['infectionsByRequestedTime']*factor
+
+    #For Severe Impact
+    severeImpact['casesForICUByRequestedTime'] = int( severeImpact['infectionsByRequestedTime'] * 0.05)
+    severeImpact['casesForVentilatorsByRequestedTime'] = int(severeImpact['infectionsByRequestedTime'] * 0.02)
+    severeImpact['dollarsInFlight'] = severeImpact['infectionsByRequestedTime']*factor
 
 
-    output_data = {'data':input_data, 'impact':impact, 'severeImpact': severeImpact}
-    return output_data
 
-def duration_normaliser(duration ,value):
-    if duration == "months" or duration =="month":
-        value *= 30
-        return value
-    elif duration == "weeks" or duration=="week":
-        value *= 7
-        return value
-    else:
-        return value
 
-def available_beds(totalbeds,severecases):
-  #expected 35% bed availability in hospitals
-    beds_available=(0.35*totalbeds)-severecases
-    return beds_available
+    output = {'data':data, 'impact':impact, 'severeImpact': severeImpact}
 
-def money_lost(days,avgIncome,avgIncomePopulation):
-  return avgIncome*days*avgIncomePopulation 
+    return output
+
+def duration_to_days(durationType ,time):
+    if durationType == "months":
+        time *= 30
+    elif durationType == "weeks":
+        time *= 7
+
+    return time
+
+#calculating the number of beds available
+def beds_available(totalbeds, severecases):
+    available_beds = (0.35 * totalbeds) - severecases
+    #return the available beds as integers and not floats
+    return int(available_beds)
+
+def lost_money(days, avgIncome, avgIncomePopulation):
+    money_lost = avgIncome * days * avgIncomePopulation 
+
+    return money_lost
