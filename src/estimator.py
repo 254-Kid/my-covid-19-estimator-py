@@ -35,17 +35,17 @@ def estimator(data):
     severeImpact['hospitalBedsByRequestedTime'] = beds_available(totalHospitalBeds, severeImpact['severeCasesByRequestedTime'])
 
     #CHALLENGE 3
-    factor= lost_money(duration, avgDailyIncome, avgDailyIncomePopulation )
+    #factor= lost_money(duration, avgDailyIncome, avgDailyIncomePopulation )
 
     #For Impact
     impact['casesForICUByRequestedTime'] = int( impact['infectionsByRequestedTime'] * 0.05)
     impact['casesForVentilatorsByRequestedTime'] = int(impact['infectionsByRequestedTime'] * 0.02)
-    impact['dollarsInFlight'] = impact['infectionsByRequestedTime']*factor
+    impact['dollarsInFlight'] = int(impact['infectionsByRequestedTime'] * avgDailyIncomePopulation * avgDailyIncome * duration)
 
     #For Severe Impact
     severeImpact['casesForICUByRequestedTime'] = int( severeImpact['infectionsByRequestedTime'] * 0.05)
     severeImpact['casesForVentilatorsByRequestedTime'] = int(severeImpact['infectionsByRequestedTime'] * 0.02)
-    severeImpact['dollarsInFlight'] = severeImpact['infectionsByRequestedTime']*factor
+    severeImpact['dollarsInFlight'] = int(severeImpact['infectionsByRequestedTime'] * avgDailyIncomePopulation * avgDailyIncome * duration)
 
 
 
@@ -67,8 +67,3 @@ def beds_available(totalbeds, severecases):
     available_beds = (0.35 * totalbeds) - severecases
     #return the available beds as integers and not floats
     return int(available_beds)
-
-def lost_money(days, avgIncome, avgIncomePopulation):
-    money_lost = avgIncome * days * avgIncomePopulation 
-
-    return money_lost
