@@ -40,12 +40,12 @@ def estimator(data):
     #For Impact
     impact['casesForICUByRequestedTime'] = int(impact['infectionsByRequestedTime'] * 0.05)
     impact['casesForVentilatorsByRequestedTime'] = int(impact['infectionsByRequestedTime'] * 0.02)
-    impact['dollarsInFlight'] = (impact['infectionsByRequestedTime'] * avgDailyIncomePopulation * avgDailyIncome)/ duration
+    impact['dollarsInFlight'] =int((impact['infectionsByRequestedTime'] * avgDailyIncomePopulation * avgDailyIncome)/ duration)
 
     #For Severe Impact
     severeImpact['casesForICUByRequestedTime'] =  int(severeImpact['infectionsByRequestedTime'] * 0.05)
     severeImpact['casesForVentilatorsByRequestedTime'] = int(severeImpact['infectionsByRequestedTime'] * 0.02)
-    severeImpact['dollarsInFlight'] = (severeImpact['infectionsByRequestedTime'] * avgDailyIncomePopulation * avgDailyIncome) /duration
+    severeImpact['dollarsInFlight'] = int((severeImpact['infectionsByRequestedTime'] * avgDailyIncomePopulation * avgDailyIncome) /duration)
 
 
 
