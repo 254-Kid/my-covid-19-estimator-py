@@ -38,13 +38,13 @@ def estimator(data):
     #factor= lost_money(duration, avgDailyIncome, avgDailyIncomePopulation )
 
     #For Impact
-    impact['casesForICUByRequestedTime'] = impact['infectionsByRequestedTime'] * 0.05
-    impact['casesForVentilatorsByRequestedTime'] = impact['infectionsByRequestedTime'] * 0.02
+    impact['casesForICUByRequestedTime'] = int(impact['infectionsByRequestedTime'] * 0.05)
+    impact['casesForVentilatorsByRequestedTime'] = int(impact['infectionsByRequestedTime'] * 0.02)
     impact['dollarsInFlight'] = impact['infectionsByRequestedTime'] * avgDailyIncomePopulation * avgDailyIncome * duration
 
     #For Severe Impact
-    severeImpact['casesForICUByRequestedTime'] =  severeImpact['infectionsByRequestedTime'] * 0.05
-    severeImpact['casesForVentilatorsByRequestedTime'] = severeImpact['infectionsByRequestedTime'] * 0.02
+    severeImpact['casesForICUByRequestedTime'] =  int(severeImpact['infectionsByRequestedTime'] * 0.05)
+    severeImpact['casesForVentilatorsByRequestedTime'] = int(severeImpact['infectionsByRequestedTime'] * 0.02)
     severeImpact['dollarsInFlight'] = severeImpact['infectionsByRequestedTime'] * avgDailyIncomePopulation * avgDailyIncome * duration
 
 
